@@ -1,10 +1,14 @@
-module DatepickerHelper
+require 'app/helpers/form_helper'
+
+module JqueryDatepicker
+  module DatepickerHelper
+
+    include JqueryDatepicker::FormHelper
+
+    # Helper method that creates a datepicker input field
+    def datepicker_input(object_name, method, options = {})
+      datepicker(object_name, method, options)
+    end
   
-  # Helper method that creates a datepicker input field
-  def datepicker_input(model, att)
-    html = text_field(model,att)
-    html += javascript_tag 'jQuery(document).ready(function(){$("#'+model.to_s+'_'+att.to_s+'").datepicker()});'
-    return html
   end
-  
 end
