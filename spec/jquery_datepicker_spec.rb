@@ -13,7 +13,7 @@ describe JqueryDatepicker do
     end
 
     let :valid_nested_response_javascript do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_var_att1').datepicker()});\n//]]>\n</script>"
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_var_att1').datepicker({})});\n//]]>\n</script>"
     end
 
    let :valid_response_input do
@@ -21,7 +21,7 @@ describe JqueryDatepicker do
     end
 
     let :valid_response_javascript do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker()});\n//]]>\n</script>"
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker({})});\n//]]>\n</script>"
     end
 
   describe JqueryDatepicker::DatepickerHelper, :type => :view do
@@ -31,10 +31,51 @@ describe JqueryDatepicker do
           <%= datepicker_input(:foo, :att1) %>
         EOTEMPLATE
     end
+    
+    let :datepicker_input_dp_options_template do
+        <<-EOTEMPLATE
+          <%= datepicker_input(:foo, :att1, :minDate => -20, :maxDate => "+1M +10D") %>
+        EOTEMPLATE
+    end
+    
+    let :datepicker_input_tf_options_template do
+        <<-EOTEMPLATE
+          <%= datepicker_input(:foo, :att1, :tabindex => 70) %>
+        EOTEMPLATE
+    end
+    
+    let :datepicker_input_tf_and_dp_options_template do
+        <<-EOTEMPLATE
+          <%= datepicker_input(:foo, :att1, :minDate => -20, :maxDate => "+1M +10D", :tabindex => 70) %>
+        EOTEMPLATE
+    end
+    
+    let :valid_response_javascript_with_options do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker({\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+    end
+    
+    let :valid_response_input_with_options do
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" />"
+    end
 
     it "should return a valid code when calling from the helper" do
       render :inline => datepicker_input_template
       rendered.strip.should == valid_response_input+valid_response_javascript
+    end
+    
+    it "should use the jQuery datepicker options" do
+      render :inline => datepicker_input_dp_options_template
+      rendered.strip.should == valid_response_input+valid_response_javascript_with_options
+    end
+    
+    it "should use the text_field options" do
+      render :inline => datepicker_input_tf_options_template
+      rendered.strip.should == valid_response_input_with_options+valid_response_javascript
+    end
+    
+    it "should put each option on the correct place when sending Datepicker and textfield options" do
+      render :inline => datepicker_input_tf_and_dp_options_template
+      rendered.strip.should == valid_response_input_with_options+valid_response_javascript_with_options
     end
 
   end
