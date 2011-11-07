@@ -50,12 +50,22 @@ describe JqueryDatepicker do
         EOTEMPLATE
     end
     
+    let :datepicker_input_with_value_template do
+        <<-EOTEMPLATE
+          <%= datepicker_input(:foo, :att1, :value => "value") %>
+        EOTEMPLATE
+    end
+    
     let :valid_response_javascript_with_options do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker({\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
     
     let :valid_response_input_with_options do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" />"
+    end
+    
+    let :valid_response_input_with_value do
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"value\" />"
     end
 
     it "should return a valid code when calling from the helper" do
@@ -76,6 +86,11 @@ describe JqueryDatepicker do
     it "should put each option on the correct place when sending Datepicker and textfield options" do
       render :inline => datepicker_input_tf_and_dp_options_template
       rendered.strip.should == valid_response_input_with_options+valid_response_javascript_with_options
+    end
+    
+    it "should work when sending the value on the options" do
+      render :inline => datepicker_input_with_value_template
+      rendered.strip.should == valid_response_input_with_value+valid_response_javascript
     end
 
   end
