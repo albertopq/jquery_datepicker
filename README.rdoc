@@ -21,14 +21,14 @@ gem 'jquery_datepicker'
 
 Add this to your view.
 
-<%= datepicker_input "user","birthday" %>
+	<%= datepicker_input "user","birthday" %>
 
 Where "user" is your model name and "birthday" the name of the datefield.
 
 You can also use it with the form helper like:
 
-<% form_for(@user) do |f| %>
-	<%= f.datepicker 'birthday' %>
-	<%= f.submit 'Create' %>
-<% end %>
+	<% form_for(@user) do |f| %>
+		<%= f.datepicker 'birthday' %>
+		<%= f.submit 'Create' %>
+	<% end %>
 
