@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = "jquery_datepicker"
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alberto Pastor"]
-  s.date = "2011-11-06"
+  s.date = "2011-11-07"
   s.description = "View helper that allows to select dates from a calendar (using jQuery Ui plugin)"
   s.email = "albert.pastor@gmail.com"
   s.extra_rdoc_files = ["README.rdoc", "lib/app/helpers/datepicker_helper.rb", "lib/app/helpers/form_helper.rb", "lib/jquery_datepicker.rb"]
