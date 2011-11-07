@@ -2,38 +2,52 @@
 
 This simple gem allows you to add a date picker field into your views.
 
-== Installation
+== Getting Started
 
-As this gem is using jQuery Ui plugin, be sure that you are already using jquery into your project. In order to install it:
+1. Add into your Gemfile:
 
-* Add into your Gemfile 
+    gem 'jquery-rails'
 
-	gem 'jquery-rails'
+2. Execute this command to install the needed js files:
 
-* Execute this command to install the needed js files
+    rails generate jquery:install --ui
 
-	rails generate jquery:install --ui
 
-* Insert into your Gemfile:
+3. Insert into your Gemfile:
 
-	gem 'jquery_datepicker'
+    gem 'jquery_datepicker'
+
 
 == Usage
 
 Add this to your view.
 
-	<%= datepicker_input "user","birthday" %>
+    <%= datepicker_input "user","birthday" %>
+	
 
 Where "user" is your model name and "birthday" the name of the datefield.
 
 You can also use it with the form helper like:
 
-	<% form_for(@user) do |f| %>
-		<%= f.datepicker 'birthday' %>
-		<%= f.submit 'Create' %>
-	<% end %>
+    <% form_for(@user) do |f| %>
+      <%= f.datepicker 'birthday' %>
+      <%= f.submit 'Create' %>
+    <% end %>
 
-== Examples
+Nested attributes are permitted as well:
+
+    <% form_for(@user) do |f| %>
+      <% f.fields_for(@nested) do |f2| %>
+        <%= f2.datepicker 'birthday' %>
+      <% end %>
+      <%= f.submit 'Create' %>
+    <% end %>
+
+You can pass options as it would be a normal text_field, plus all the datepicker options available (http://jqueryui.com/demos/datepicker/#options)
+
+    <%= datepicker_input(:foo, :att1, :minDate => -20, :maxDate => "+1M +10D", :tabindex => 70) %>
 
 	
+== Support
 
+Open an issue in https://github.com/albertopq/jquery_datepicker if you need further support or want to report a bug
