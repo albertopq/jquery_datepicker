@@ -2,9 +2,12 @@ require 'pp'
 require 'spec_helper'
 require 'app/helpers/datepicker_helper'
 require 'app/helpers/form_helper'
+require 'date'
 
 ActionView::Base.send(:include, JqueryDatepicker::DatepickerHelper)
 ActionView::Helpers::FormBuilder.send(:include,JqueryDatepicker::FormBuilder)
+
+current_value = Time.now
 
 describe JqueryDatepicker do
 
@@ -34,7 +37,7 @@ describe JqueryDatepicker do
     
     let :datepicker_input_dp_options_template do
         <<-EOTEMPLATE
-          <%= datepicker_input(:foo, :att1, :minDate => -20, :maxDate => "+1M +10D") %>
+          <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D") %>
         EOTEMPLATE
     end
     
@@ -46,18 +49,25 @@ describe JqueryDatepicker do
     
     let :datepicker_input_tf_and_dp_options_template do
         <<-EOTEMPLATE
-          <%= datepicker_input(:foo, :att1, :minDate => -20, :maxDate => "+1M +10D", :tabindex => 70) %>
+          <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D", :tabindex => 70) %>
         EOTEMPLATE
     end
     
+    let :datepicker_input_dateFormat_template do
+        <<-EOTEMPLATE
+          <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D", :value => "#{current_value.utc.to_s}") %>
+        EOTEMPLATE
+    end
+    
+    
     let :datepicker_input_with_value_template do
         <<-EOTEMPLATE
-          <%= datepicker_input(:foo, :att1, :value => "value") %>
+          <%= datepicker_input(:foo, :att1, :value => "#{current_value.utc.to_s}") %>
         EOTEMPLATE
     end
     
     let :valid_response_javascript_with_options do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker({\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
     
     let :valid_response_input_with_options do
@@ -65,7 +75,11 @@ describe JqueryDatepicker do
     end
     
     let :valid_response_input_with_value do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"value\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.utc.to_s}\" />"
+    end
+    
+    let :valid_response_input_with_value_formatted do
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%Y-%m-%d')}\" />"
     end
 
     it "should return a valid code when calling from the helper" do
@@ -91,6 +105,11 @@ describe JqueryDatepicker do
     it "should work when sending the value on the options" do
       render :inline => datepicker_input_with_value_template
       rendered.strip.should == valid_response_input_with_value+valid_response_javascript
+    end
+    
+    it "should format the date if both dateFormat and value params are set" do
+      render :inline => datepicker_input_dateFormat_template
+      rendered.strip.should == valid_response_input_with_value_formatted+valid_response_javascript_with_options
     end
 
   end
@@ -133,5 +152,27 @@ describe JqueryDatepicker do
       rendered.should include(valid_nested_response_javascript)
     end
 
+  end
+  
+  describe JqueryDatepicker::InstanceTag do
+    it "should return a valid format when translating yy-mm-dd" do
+      input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
+      input_tag.translate_format("yy-mm-dd").should eq("%Y-%m-%d")
+    end
+    
+    it "should return a valid format when translating mm-dd-yy" do
+      input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
+      input_tag.translate_format("mm-dd-yy").should eq("%m-%d-%Y")
+    end
+    
+    it "should return a valid format when translating m-d-y" do
+      input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
+      input_tag.translate_format("m-d-y").should eq("%-m-%-d-%y")
+    end
+    
+    it "should return a valid format when translating yy/m-dd" do
+      input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
+      input_tag.translate_format("yy/m-dd").should eq("%Y/%-m-%d")
+    end
   end
 end
