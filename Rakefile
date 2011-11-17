@@ -3,7 +3,7 @@ require 'rake'
 require 'echoe'
 require 'rspec/core/rake_task'
 
-Echoe.new('jquery_datepicker', '0.3.1') do |p|
+Echoe.new('jquery_datepicker', '0.3.2') do |p|
   p.description    = "View helper that allows to select dates from a calendar (using jQuery Ui plugin)"
   p.url            = "http://github.com/albertopq/jquery_datepicker"
   p.author         = "Alberto Pastor"
