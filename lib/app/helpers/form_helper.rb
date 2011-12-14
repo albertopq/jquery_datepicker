@@ -11,7 +11,7 @@ module JqueryDatepicker
       dp_options, tf_options =  input_tag.split_options(options)
       tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options.has_key?(:value) && dp_options.has_key?(:dateFormat)
       html = input_tag.to_input_field_tag("text", tf_options)
-      html += javascript_tag("jQuery(document).ready(function(){$('##{input_tag.get_name_and_id["id"]}').datepicker(#{dp_options.to_json})});")
+      html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id["id"]}').datepicker(#{dp_options.to_json})});")
       html.html_safe
     end
 

@@ -16,7 +16,7 @@ describe JqueryDatepicker do
     end
 
     let :valid_nested_response_javascript do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_var_att1').datepicker({})});\n//]]>\n</script>"
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_var_att1').datepicker({})});\n//]]>\n</script>"
     end
 
    let :valid_response_input do
@@ -24,7 +24,7 @@ describe JqueryDatepicker do
     end
 
     let :valid_response_javascript do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker({})});\n//]]>\n</script>"
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({})});\n//]]>\n</script>"
     end
 
   describe JqueryDatepicker::DatepickerHelper, :type => :view do
@@ -67,7 +67,7 @@ describe JqueryDatepicker do
     end
     
     let :valid_response_javascript_with_options do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){$('#foo_att1').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
     
     let :valid_response_input_with_options do
