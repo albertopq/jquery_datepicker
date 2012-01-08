@@ -25,7 +25,7 @@ Rails 3.1:
 
 1. Insert into your Gemfile:
 
-   gem 'jquery_datepicker'
+    gem 'jquery_datepicker'
 
 2. If you are using Rails 3.1 with the asset pipeline enabled (default), the necessary
 files are already in your asset pipeline.
