@@ -27,7 +27,11 @@ Rails 3.1:
 
     gem 'jquery_datepicker'
 
-2. If you are using Rails 3.1 with the asset pipeline enabled (default), the necessary files are already in your asset pipeline. Just add `//= require jquery` and `//= require jquery_ujs` to your app/assets/javascripts/application.js
+2. If you are using Rails 3.1 with the asset pipeline enabled (default), the necessary files are already in your asset pipeline. Just add (if they are not already there) to your app/assets/javascripts/application.js:
+
+    //= require jquery
+    //= require jquery-ujs
+    //= require jquery-ui
 
 
 == Usage
