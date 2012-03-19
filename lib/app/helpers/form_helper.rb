@@ -27,7 +27,7 @@ end
 
 class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
 
-  FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y"}
+  FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y", "M" => "%b"}
   
   # Extending ActionView::Helpers::InstanceTag module to make Rails build the name and id
   # Just returns the options before generate the HTML in order to use the same id and name (see to_input_field_tag mehtod)
