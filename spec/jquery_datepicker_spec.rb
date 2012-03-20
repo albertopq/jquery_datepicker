@@ -20,7 +20,7 @@ describe JqueryDatepicker do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_var_att1').datepicker({})});\n//]]>\n</script>"
     end
 
-   let :valid_response_input do
+    let :valid_response_input do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" />"
     end
 
@@ -70,12 +70,17 @@ describe JqueryDatepicker do
           <<-EOTEMPLATE
             <%= datepicker_input(:foo, :att1, :dateFormat  => "d M yy", :minDate => -20, :maxDate => "+1M +10D", :value => "#{current_value_date.to_s}") %>
           EOTEMPLATE
-      end
-    
-    
+    end
+
     let :datepicker_input_with_value_template do
         <<-EOTEMPLATE
           <%= datepicker_input(:foo, :att1, :value => "#{current_value.utc.to_s}") %>
+        EOTEMPLATE
+    end
+    
+    let :datepicker_input_with_options_with_empty_value_template do
+        <<-EOTEMPLATE
+          <%= datepicker_input(:foo, :att1, :tabindex => 70, :minDate => -20, :maxDate => "+1M +10D", :dateFormat => "yy-mm-dd", :value => "") %>
         EOTEMPLATE
     end
     
@@ -89,6 +94,10 @@ describe JqueryDatepicker do
     
     let :valid_response_input_with_options do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" />"
+    end
+    
+    let :valid_response_input_with_options_empty do
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" value=\"\" />"
     end
     
     let :valid_response_input_with_value do
@@ -141,6 +150,11 @@ describe JqueryDatepicker do
     it "should format the date if both dateFormat and value params are set M" do
       render :inline => datepicker_input_dateFormat_M_template_date
       rendered.strip.should == valid_response_input_with_value_formatted_M+valid_response_javascript_with_options_M
+    end
+    
+    it "should render empty default value, but format the date if format options are sent but value is nil" do
+      render :inline => datepicker_input_with_options_with_empty_value_template
+      rendered.strip.should == valid_response_input_with_options_empty+valid_response_javascript_with_options
     end
 
   end
