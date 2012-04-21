@@ -33,6 +33,14 @@ Rails 3.1:
     //= require jquery-ujs
     //= require jquery-ui
 
+(if you are using datetime picker, add also)
+
+    //= require jquery-ui-timepicker-addon.js
+
+You can find it here:
+
+https://github.com/trentrichardson/jQuery-Timepicker-Addon
+
 
 == Usage
 
@@ -63,7 +71,28 @@ You can pass options as it would be a normal text_field, plus all the datepicker
 
     <%= datepicker_input(:foo, :att1, :minDate => -20, :maxDate => "+1M +10D", :tabindex => 70) %>
 
-	
+== Use DateTime picker
+
+If you want to use a datatime picker, download this plugin
+
+https://github.com/trentrichardson/jQuery-Timepicker-Addon
+
+and add it to your project (in the assets pipeline if you are using Rails 3.1 or manually otherwise).
+Don't forget the CSS! This plugin assume you have installed a jquery-ui theme.
+
+Then you can use in your views:
+
+    <%= datetime_picker_input "user","loged_in", :dateFormat => "yy-mm-dd" %>
+
+or
+
+    <% form_for(@user) do |f| %>
+      <%= f.datetime_picker 'loged_in', :dateFormat => "yy-mm-dd" %>
+      <%= f.submit 'Create' %>
+    <% end %>
+
+Important! Be aware the way Rails stores the datetime fields cause you'll need to specify the dateFormat to "yy-mm-dd" or pre-process your field value on the controller. The default format won't work.
+
 == Support
 
 Open an issue in https://github.com/albertopq/jquery_datepicker if you need further support or want to report a bug
