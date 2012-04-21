@@ -28,6 +28,10 @@ describe JqueryDatepicker do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({})});\n//]]>\n</script>"
     end
 
+    let :valid_response_javascript_datetime do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({})});\n//]]>\n</script>"
+    end
+    
   describe JqueryDatepicker::DatepickerHelper, :type => :view do
 
     let :datepicker_input_template do
@@ -35,7 +39,13 @@ describe JqueryDatepicker do
           <%= datepicker_input(:foo, :att1) %>
         EOTEMPLATE
     end
-    
+
+    let :datetimepicker_input_template do
+        <<-EOTEMPLATE
+          <%= datetime_picker_input(:foo, :att1) %>
+        EOTEMPLATE
+    end
+
     let :datepicker_input_dp_options_template do
         <<-EOTEMPLATE
           <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D") %>
@@ -173,6 +183,14 @@ describe JqueryDatepicker do
         EOTEMPLATE
     end
 
+    let :datetimepicker_form_template do
+        <<-EOTEMPLATE
+          <%= form_for(foo, :url => "fake") do |f| %>
+            <%= f.datetime_picker(:att1) %>
+          <% end %>
+        EOTEMPLATE
+    end
+
     let :datepicker_nested_form_template do
         <<-EOTEMPLATE
           <%= form_for(foo, :url => "fake") do |f| %>
@@ -189,6 +207,12 @@ describe JqueryDatepicker do
       render :inline => datepicker_form_template , :locals => {:foo => foo}
       rendered.should include(valid_response_input)
       rendered.should include(valid_response_javascript)
+    end
+
+    it "should return a valid datetime response when calling inside a form_for" do
+      render :inline => datetimepicker_form_template , :locals => {:foo => foo}
+      rendered.should include(valid_response_input)
+      rendered.should include(valid_response_javascript_datetime)
     end
 
     it "should return a valid response when calling inside a nested form_form" do
