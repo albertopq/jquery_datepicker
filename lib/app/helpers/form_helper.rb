@@ -41,9 +41,21 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   end
 
   def available_datepicker_options(timepicker = false)
-    opts = [:disabled, :altField, :altFormat, :appendText, :autoSize, :buttonImage, :buttonImageOnly, :buttonText, :calculateWeek, :changeMonth, :changeYear, :closeText, :constrainInput, :currentText, :dateFormat, :dayNames, :dayNamesMin, :dayNamesShort, :defaultDate, :duration, :firstDay, :gotoCurrent, :hideIfNoPrevNext, :isRTL, :maxDate, :minDate, :monthNames, :monthNamesShort, :navigationAsDateFormat, :nextText, :numberOfMonths, :prevText, :selectOtherMonths, :shortYearCutoff, :showAnim, :showButtonPanel, :showCurrentAtPos, :showMonthAfterYear, :showOn, :showOptions, :showOtherMonths, :showWeek, :stepMonths, :weekHeader, :yearRange, :yearSuffix]
+    opts = [:disabled, :altField, :altFormat, :appendText, :autoSize, :buttonImage, :buttonImageOnly, :buttonText, 
+      :calculateWeek, :changeMonth, :changeYear, :closeText, :constrainInput, :currentText, :dateFormat, :dayNames, 
+      :dayNamesMin, :dayNamesShort, :defaultDate, :duration, :firstDay, :gotoCurrent, :hideIfNoPrevNext, :isRTL, 
+      :maxDate, :minDate, :monthNames, :monthNamesShort, :navigationAsDateFormat, :nextText, :numberOfMonths, 
+      :prevText, :selectOtherMonths, :shortYearCutoff, :showAnim, :showButtonPanel, :showCurrentAtPos, 
+      :showMonthAfterYear, :showOn, :showOptions, :showOtherMonths, :showWeek, :stepMonths, :weekHeader, 
+      :yearRange, :yearSuffix]
     if timepicker
-      opts.reverse_merge!([:currentText, :closeText, :ampm, :amNames, :pmNames, :timeFormat, :timeSuffix, :timeOnlyTitle, :timeText, :hourText, :minuteText, :secondText, :millisecText, :timezoneText, :showButtonPanel, :timeOnly, :showHour, :showMinute, :showSecond, :showMillisec, :showTimezone, :showTime, :stepHour, :stepMinute, :stepSecond, :stepMillisec, :hour, :minute, :second, :millisec, :timezone, :hourMin, :minuteMin, :secondMin, :millisecMin, :hourMax, :minuteMax, :secondMax, :millisecMax, :minDateTime, :maxDateTime, :onSelect, :hourGrid, :minuteGrid, :secondGrid, :millisecGrid, :alwaysSetTime, :separator, :altFieldTimeOnly, :showTimepicker, :timezoneIso8609, :timezoneList, :addSliderAccess, :sliderAccessArgs])
+      opts.reverse_merge!([:currentText, :closeText, :ampm, :amNames, :pmNames, :timeFormat, :timeSuffix,
+        :timeOnlyTitle, :timeText, :hourText, :minuteText, :secondText, :millisecText, :timezoneText, :showButtonPanel, 
+        :timeOnly, :showHour, :showMinute, :showSecond, :showMillisec, :showTimezone, :showTime, :stepHour, :stepMinute, 
+        :stepSecond, :stepMillisec, :hour, :minute, :second, :millisec, :timezone, :hourMin, :minuteMin, :secondMin, 
+        :millisecMin, :hourMax, :minuteMax, :secondMax, :millisecMax, :minDateTime, :maxDateTime, :onSelect, :hourGrid, 
+        :minuteGrid, :secondGrid, :millisecGrid, :alwaysSetTime, :separator, :altFieldTimeOnly, :showTimepicker, 
+        :timezoneIso8609, :timezoneList, :addSliderAccess, :sliderAccessArgs])
     end
     opts
   end
