@@ -11,9 +11,11 @@ module JqueryDatepicker
       
       if tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
         if timepicker && dp_options.has_key?(:timeFormat)
-          tf_options[:value] = input_tag.format_time(tf_options[:value], "#{ dp_options[:dateFormat] } #{dp_options[:timeFormat]}"))
+          tf_options[:value] = input_tag.format_time(tf_options[:value], 
+                                                     "#{ dp_options[:dateFormat] } #{dp_options[:timeFormat]}")
         else
-          tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat]))
+          tf_options[:value] = input_tag.format_date(tf_options[:value], 
+                                                     String.new(dp_options[:dateFormat]))
         end
       end
       
