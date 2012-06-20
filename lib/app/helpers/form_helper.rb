@@ -61,14 +61,14 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
             :showMonthAfterYear, :showOn, :showOptions, :showOtherMonths, :showWeek, :stepMonths, :weekHeader,
             :yearRange, :yearSuffix]
     if timepicker
-      opts.reverse_merge!([:currentText, :closeText, :ampm, :amNames, :pmNames, :timeFormat, :timeSuffix,
-                           :timeOnlyTitle, :timeText, :hourText, :minuteText, :secondText, :millisecText, :timezoneText,
-                           :showButtonPanel, :timeOnly, :showHour, :showMinute, :showSecond, :showMillisec, :showTimezone,
-                           :showTime, :stepHour, :stepMinute, :stepSecond, :stepMillisec, :hour, :minute, :second,
-                           :millisec, :timezone, :hourMin, :minuteMin, :secondMin, :millisecMin, :hourMax, :minuteMax,
-                           :secondMax, :millisecMax, :minDateTime, :maxDateTime, :onSelect, :hourGrid, :minuteGrid,
-                           :secondGrid, :millisecGrid, :alwaysSetTime, :separator, :altFieldTimeOnly, :showTimepicker,
-                           :timezoneIso8609, :timezoneList, :addSliderAccess, :sliderAccessArgs])
+      opts |= [:currentText, :closeText, :ampm, :amNames, :pmNames, :timeFormat, :timeSuffix,
+               :timeOnlyTitle, :timeText, :hourText, :minuteText, :secondText, :millisecText, :timezoneText,
+               :showButtonPanel, :timeOnly, :showHour, :showMinute, :showSecond, :showMillisec, :showTimezone,
+               :showTime, :stepHour, :stepMinute, :stepSecond, :stepMillisec, :hour, :minute, :second,
+               :millisec, :timezone, :hourMin, :minuteMin, :secondMin, :millisecMin, :hourMax, :minuteMax,
+               :secondMax, :millisecMax, :minDateTime, :maxDateTime, :onSelect, :hourGrid, :minuteGrid,
+               :secondGrid, :millisecGrid, :alwaysSetTime, :separator, :altFieldTimeOnly, :showTimepicker,
+               :timezoneIso8609, :timezoneList, :addSliderAccess, :sliderAccessArgs]
     end
     opts
   end
