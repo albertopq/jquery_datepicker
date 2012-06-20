@@ -76,7 +76,7 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   end
 
   def format_date(tb_formatted, format)
-    new_format = translate_date_format(format)
+    new_format = translate_format(format)
     Date.parse(tb_formatted).strftime(new_format)
   end
 
@@ -91,11 +91,11 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   # This gem is not going to support all the options, just the most used.
 
   def translate_date_format(format)
-    format.gsub!(/#{DATE_FORMAT_REPLACEMENTS.keys.join("|")}/) { |match| DATE_FORMAT_REPLACEMENTS[match] }
+    format.gsub(/#{DATE_FORMAT_REPLACEMENTS.keys.join("|")}/) { |match| DATE_FORMAT_REPLACEMENTS[match] }
   end
 
   def translate_time_format(format)
-    format.gsub!(/#{TIME_FORMAT_REPLACEMENTS.keys.join("|")}/) { |match| TIME_FORMAT_REPLACEMENTS[match] }
+    format.gsub(/#{TIME_FORMAT_REPLACEMENTS.keys.join("|")}/) { |match| TIME_FORMAT_REPLACEMENTS[match] }
   end
 
 end
