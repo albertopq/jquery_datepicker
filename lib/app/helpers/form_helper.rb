@@ -9,7 +9,11 @@ module JqueryDatepicker
     def datepicker(object_name, method, options = {}, timepicker = false)
       input_tag =  JqueryDatepicker::InstanceTag.new(object_name, method, self, options.delete(:object))
       dp_options, tf_options =  input_tag.split_options(options, timepicker)
-      tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
+      if timepicker
+        tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
+      else
+        tf_options[:value] = input_tag.format_time(tf_options[:value], String.new(dp_options[:dateFormat] + " " + dp_options[:timeFormat]) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat) && dp_options.has_key?(:timeFormat)
+      end
       html = input_tag.to_input_field_tag("text", tf_options)
       method = timepicker ? "datetimepicker" : "datepicker"
       html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id["id"]}').#{method}(#{dp_options.to_json})});")
@@ -70,6 +74,11 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   def format_date(tb_formatted, format)
     new_format = translate_format(format)
     Date.parse(tb_formatted).strftime(new_format)
+  end
+  
+  def format_time(tb_formatted, format)
+    new_format = translate_format(format)
+    Time.parse(tb_formatted).strftime(new_format)
   end
 
   # Method that translates the datepicker date formats, defined in (http://docs.jquery.com/UI/Datepicker/formatDate)
