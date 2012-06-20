@@ -81,8 +81,8 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   end
 
   def format_time(tb_formatted, date_format, time_format)
-    new_date_format = translate_format(date_format)
-    new_time_format = translate_format(time_format)
+    new_date_format = translate_date_format(date_format)
+    new_time_format = translate_time_format(time_format)
     Time.parse(tb_formatted).strftime("#{ new_date_format } #{ new_time_format }")
   end
 
