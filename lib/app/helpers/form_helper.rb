@@ -8,7 +8,7 @@ module JqueryDatepicker
     # Mehtod that generates datepicker input field inside a form
     def datepicker(object_name, method, options = {}, timepicker = false)
       input_tag =  JqueryDatepicker::InstanceTag.new(object_name, method, self, options.delete(:object))
-      dp_options, tf_options =  input_tag.split_options(options)
+      dp_options, tf_options =  input_tag.split_options(options, timepicker)
       tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
       html = input_tag.to_input_field_tag("text", tf_options)
       method = timepicker ? "datetimepicker" : "datepicker"
@@ -42,11 +42,15 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
     options
   end
   
-  def available_datepicker_options
-    [:disabled, :altField, :altFormat, :appendText, :autoSize, :buttonImage, :buttonImageOnly, :buttonText, :calculateWeek, :changeMonth, :changeYear, :closeText, :constrainInput, :currentText, :dateFormat, :dayNames, :dayNamesMin, :dayNamesShort, :defaultDate, :duration, :firstDay, :gotoCurrent, :hideIfNoPrevNext, :isRTL, :maxDate, :minDate, :monthNames, :monthNamesShort, :navigationAsDateFormat, :nextText, :numberOfMonths, :prevText, :selectOtherMonths, :shortYearCutoff, :showAnim, :showButtonPanel, :showCurrentAtPos, :showMonthAfterYear, :showOn, :showOptions, :showOtherMonths, :showWeek, :stepMonths, :weekHeader, :yearRange, :yearSuffix]
+  def available_datepicker_options(timepicker = false)
+    opts = [:disabled, :altField, :altFormat, :appendText, :autoSize, :buttonImage, :buttonImageOnly, :buttonText, :calculateWeek, :changeMonth, :changeYear, :closeText, :constrainInput, :currentText, :dateFormat, :dayNames, :dayNamesMin, :dayNamesShort, :defaultDate, :duration, :firstDay, :gotoCurrent, :hideIfNoPrevNext, :isRTL, :maxDate, :minDate, :monthNames, :monthNamesShort, :navigationAsDateFormat, :nextText, :numberOfMonths, :prevText, :selectOtherMonths, :shortYearCutoff, :showAnim, :showButtonPanel, :showCurrentAtPos, :showMonthAfterYear, :showOn, :showOptions, :showOtherMonths, :showWeek, :stepMonths, :weekHeader, :yearRange, :yearSuffix]
+    if timepicker
+      opts.reverse_merge!([:currentText, :closeText, :ampm, :amNames, :pmNames, :timeFormat, :timeSuffix, :timeOnlyTitle, :timeText, :hourText, :minuteText, :secondText, :millisecText, :timezoneText, :showButtonPanel, :timeOnly, :showHour, :showMinute, :showSecond, :showMillisec, :showTimezone, :showTime, :stepHour, :stepMinute, :stepSecond, :stepMillisec, :hour, :minute, :second, :millisec, :timezone, :hourMin, :minuteMin, :secondMin, :millisecMin, :hourMax, :minuteMax, :secondMax, :millisecMax, :minDateTime, :maxDateTime, :onSelect, :hourGrid, :minuteGrid, :secondGrid, :millisecGrid, :alwaysSetTime, :separator, :altFieldTimeOnly, :showTimepicker, :timezoneIso8609, :timezoneList, :addSliderAccess, :sliderAccessArgs])
+    end
+    opts
   end
   
-  def split_options(options)
+  def split_options(options, timepicker = false)
     tf_options = options.slice!(*available_datepicker_options)
     return options, tf_options
   end
