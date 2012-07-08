@@ -76,13 +76,13 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   end
 
   def format_date(tb_formatted, format)
-    new_format = translate_date_format(format)
+    new_format = translate_format(format, 'date')
     Date.parse(tb_formatted).strftime(new_format)
   end
 
   def format_time(tb_formatted, date_format, time_format)
-    new_date_format = translate_date_format(date_format)
-    new_time_format = translate_time_format(time_format)
+    new_date_format = translate_format(date_format, 'date')
+    new_time_format = translate_format(time_format, 'time')
     Time.parse(tb_formatted).strftime("#{ new_date_format } #{ new_time_format }")
   end
 
@@ -90,12 +90,8 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   # to the ruby standard format (http://www.ruby-doc.org/core-1.9.3/Time.html#method-i-strftime).
   # This gem is not going to support all the options, just the most used.
 
-  def translate_date_format(format)
-    format.gsub(/#{DATE_FORMAT_REPLACEMENTS.keys.join("|")}/) { |match| DATE_FORMAT_REPLACEMENTS[match] }
+  def translate_format(format, type = 'date')
+    replacements = (type == 'date') ? DATE_FORMAT_REPLACEMENTS : TIME_FORMAT_REPLACEMENTS
+    format.gsub(/#{replacements.keys.join("|")}/) { |match| replacements[match] }
   end
-
-  def translate_time_format(format)
-    format.gsub(/#{TIME_FORMAT_REPLACEMENTS.keys.join("|")}/) { |match| TIME_FORMAT_REPLACEMENTS[match] }
-  end
-
 end

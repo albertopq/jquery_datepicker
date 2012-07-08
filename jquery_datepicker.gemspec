@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Alberto Pastor", "Alex Nisnevich"]
+  s.authors = ["Alberto Pastor"]
   s.date = "2012-06-18"
   s.description = "View helper that allows to select dates from a calendar (using jQuery Ui plugin)"
   s.email = "albert.pastor@gmail.com"
