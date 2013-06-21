@@ -7,8 +7,8 @@ require 'date'
 ActionView::Base.send(:include, JqueryDatepicker::DatepickerHelper)
 ActionView::Helpers::FormBuilder.send(:include,JqueryDatepicker::FormBuilder)
 
-current_value = Time.now
-current_value_date = Date.current
+current_value = Time.now.utc
+current_value_date = current_value.to_date
 
 describe JqueryDatepicker do
 
@@ -26,6 +26,10 @@ describe JqueryDatepicker do
 
     let :valid_response_javascript do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({})});\n//]]>\n</script>"
+    end
+
+    let :valid_response_javascript_with_tf_options do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#custom_id').datepicker({})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_datetime do
@@ -57,7 +61,13 @@ describe JqueryDatepicker do
           <%= datepicker_input(:foo, :att1, :tabindex => 70) %>
         EOTEMPLATE
     end
-    
+   
+    let :datepicker_input_tf_options_id_and_name_template do
+        <<-EOTEMPLATE
+          <%= datepicker_input(:foo, :att1, :id => "custom_id", :name => "custom_name", :tabindex => 70) %>
+        EOTEMPLATE
+    end
+
     let :datepicker_input_tf_and_dp_options_template do
         <<-EOTEMPLATE
           <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D", :tabindex => 70) %>
@@ -66,7 +76,7 @@ describe JqueryDatepicker do
     
     let :datepicker_input_dateFormat_template do
         <<-EOTEMPLATE
-          <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D", :value => "#{current_value.utc.to_s}") %>
+          <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D", :value => "#{current_value.to_s}") %>
         EOTEMPLATE
     end
     
@@ -90,7 +100,7 @@ describe JqueryDatepicker do
 
     let :datepicker_input_with_value_template do
         <<-EOTEMPLATE
-          <%= datepicker_input(:foo, :att1, :value => "#{current_value.utc.to_s}") %>
+          <%= datepicker_input(:foo, :att1, :value => "#{current_value.to_s}") %>
         EOTEMPLATE
     end
     
@@ -103,7 +113,11 @@ describe JqueryDatepicker do
     let :valid_response_javascript_with_options do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
-    
+ 
+    let :valid_response_javascript_with_options_id_and_name do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#custom_id').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+    end
+
     let :valid_response_javascript_with_options_M do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"dd M yy\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
@@ -115,13 +129,17 @@ describe JqueryDatepicker do
     let :valid_response_input_with_options do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" />"
     end
+
+    let :valid_response_input_with_options_id_and_name do
+      "<input id=\"custom_id\" name=\"custom_name\" size=\"30\" tabindex=\"70\" type=\"text\" />"
+    end
     
     let :valid_response_input_with_options_empty do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" value=\"\" />"
     end
     
     let :valid_response_input_with_value do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.utc.to_s}\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.to_s}\" />"
     end
     
     let :valid_response_input_with_value_formatted do
@@ -150,7 +168,12 @@ describe JqueryDatepicker do
       render :inline => datepicker_input_tf_options_template
       rendered.strip.should == valid_response_input_with_options+valid_response_javascript
     end
-    
+
+    it "should use the text_field options id and name" do
+      render :inline => datepicker_input_tf_options_id_and_name_template
+      rendered.strip.should == valid_response_input_with_options_id_and_name+valid_response_javascript_with_tf_options
+    end
+
     it "should use populate the default value when sending a Date.to_s" do
       render :inline => datepicker_input_dateFormat_template_date
       rendered.strip.should == valid_response_input_with_value_formatted+valid_response_javascript_with_options
