@@ -73,7 +73,7 @@ You can pass options as it would be a normal text_field, plus all the datepicker
 
 == Use DateTime picker
 
-If you want to use a datatime picker, download this plugin
+If you want to use a datetime picker, download this plugin
 
 https://github.com/trentrichardson/jQuery-Timepicker-Addon
 
