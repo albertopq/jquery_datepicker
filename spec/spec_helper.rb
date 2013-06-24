@@ -28,6 +28,6 @@ class Foo
 
   # Mocking an attribute
   def att1
-    
+
   end
 end
