@@ -80,7 +80,13 @@ describe JqueryDatepicker do
         EOTEMPLATE
     end
 
-   let :datepicker_input_dateFormat_template_date do
+    let :datetime_picker_input_timeFormat_template do
+        <<-EOTEMPLATE
+          <%= datetime_picker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :timeFormat  => "hh:mm", :minDate => -20, :maxDate => "+1M +10D", :value => "#{current_value.to_s}") %>
+        EOTEMPLATE
+    end
+
+    let :datepicker_input_dateFormat_template_date do
         <<-EOTEMPLATE
           <%= datepicker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :minDate => -20, :maxDate => "+1M +10D", :value => "#{current_value_date.to_s}") %>
         EOTEMPLATE
@@ -110,8 +116,22 @@ describe JqueryDatepicker do
         EOTEMPLATE
     end
 
+    let :datetime_picker_input_with_timepicker_options_template do
+        <<-EOTEMPLATE
+          <%= datetime_picker_input(:foo, :att1, :tabindex => 70, :hour => "10", :minute => "15", :value => "") %>
+        EOTEMPLATE
+    end
+
     let :valid_response_javascript_with_options do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+    end
+
+    let :valid_response_time_javascript_with_timepicker_options do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({\"hour\":\"10\",\"minute\":\"15\"})});\n//]]>\n</script>"
+    end
+
+    let :valid_time_response_javascript_with_options do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20,\"timeFormat\":\"hh:mm\"})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_with_options_id_and_name do
@@ -144,6 +164,10 @@ describe JqueryDatepicker do
 
     let :valid_response_input_with_value_formatted do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%Y-%m-%d')}\" />"
+    end
+
+    let :valid_time_response_input_with_value_formatted do
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%Y-%m-%d %H:%M')}\" />"
     end
 
     let :valid_response_input_with_value_formatted_M do
@@ -194,6 +218,11 @@ describe JqueryDatepicker do
       rendered.strip.should == valid_response_input_with_value_formatted+valid_response_javascript_with_options
     end
 
+    it "should format the date and time if dateFormat, timeFormat and value params are set" do
+      render :inline => datetime_picker_input_timeFormat_template
+      rendered.strip.should == valid_time_response_input_with_value_formatted+valid_time_response_javascript_with_options
+    end
+
     it "should format the date if both dateFormat and value params are set M" do
       render :inline => datepicker_input_dateFormat_M_template_date
       rendered.strip.should == valid_response_input_with_value_formatted_M+valid_response_javascript_with_options_M
@@ -207,6 +236,11 @@ describe JqueryDatepicker do
     it "should render empty default value, but format the date if format options are sent but value is nil" do
       render :inline => datepicker_input_with_options_with_empty_value_template
       rendered.strip.should == valid_response_input_with_options_empty+valid_response_javascript_with_options
+    end
+
+    it "should take datetimepicker options" do
+      render :inline => datetime_picker_input_with_timepicker_options_template
+      rendered.strip.should == valid_response_input_with_options_empty+valid_response_time_javascript_with_timepicker_options
     end
 
   end
