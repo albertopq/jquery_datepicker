@@ -2,7 +2,6 @@ require 'date'
 
 module JqueryDatepicker
   module FormHelper
-
     include ActionView::Helpers::JavaScriptHelper
 
     # Mehtod that generates datepicker input field inside a form
@@ -20,12 +19,10 @@ module JqueryDatepicker
 
       html = input_tag.to_input_field_tag("text", tf_options)
       method = timepicker ? "datetimepicker" : "datepicker"
-      html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id["id"]}').#{method}(#{dp_options.to_json})});")
+      html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id(tf_options.stringify_keys)["id"]}').#{method}(#{dp_options.to_json})});")
       html.html_safe
     end
-
   end
-
 end
 
 module JqueryDatepicker::FormBuilder

@@ -4,7 +4,7 @@ require 'active_support/deprecation'
 require 'action_view'
 require 'rspec/rails/adapters'
 require 'rspec/rails/example/rails_example_group'
-require 'rspec/rails/matchers/render_template'
+require 'rspec/rails/matchers'
 require 'rspec/rails/example/view_example_group'
 require 'rspec/rails/mocks'
 
@@ -28,6 +28,6 @@ class Foo
 
   # Mocking an attribute
   def att1
-    
+
   end
 end
