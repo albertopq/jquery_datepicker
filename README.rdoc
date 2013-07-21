@@ -42,6 +42,16 @@ You can find it here:
 
 https://github.com/trentrichardson/jQuery-Timepicker-Addon
 
+Rails 4:
+
+1. Insert into your Gemfile:
+
+    gem 'jquery-ui-rails'
+    gem 'jquery_datepicker'
+
+2. Add the following to your app/assets/javascripts/application.js:
+
+    //= require jquery.ui.datepicker
 
 == Usage
 

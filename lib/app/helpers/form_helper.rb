@@ -6,10 +6,10 @@ module JqueryDatepicker
 
     # Mehtod that generates datepicker input field inside a form
     def datepicker(object_name, method, options = {}, timepicker = false)
-      input_tag =  JqueryDatepicker::InstanceTag.new(object_name, method, self, options.delete(:object))
+      input_tag =  JqueryDatepicker::Tags.new(object_name, method, self, options)
       dp_options, tf_options =  input_tag.split_options(options)
       tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
-      html = input_tag.to_input_field_tag("text", tf_options)
+      html = input_tag.render
       method = timepicker ? "datetimepicker" : "datepicker"
       html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id(tf_options.stringify_keys)["id"]}').#{method}(#{dp_options.to_json})});")
       html.html_safe
@@ -28,11 +28,11 @@ module JqueryDatepicker::FormBuilder
   end
 end
 
-class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
+class JqueryDatepicker::Tags < ActionView::Helpers::Tags::TextField
 
   FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y", "M" => "%b"}
 
-  # Extending ActionView::Helpers::InstanceTag module to make Rails build the name and id
+  # Extending ActionView::Helpers::Tags module to make Rails build the name and id
   # Just returns the options before generate the HTML in order to use the same id and name (see to_input_field_tag mehtod)
 
   def get_name_and_id(options = {})
