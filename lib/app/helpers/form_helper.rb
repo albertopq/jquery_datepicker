@@ -26,7 +26,13 @@ module JqueryDatepicker::FormBuilder
   end
 end
 
-class JqueryDatepicker::InstanceTag < ActionView::Helpers::Tags::Base
+begin
+  JqueryDatepicker::InstanceTag = Class.new(ActionView::Helpers::Tags::Base)
+rescue
+  JqueryDatepicker::InstanceTag = Class.new(ActionView::Helpers::InstanceTag)
+end
+
+class JqueryDatepicker::InstanceTag
 
   FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y", "M" => "%b"}
 
