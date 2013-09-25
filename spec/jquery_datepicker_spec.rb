@@ -98,6 +98,18 @@ describe JqueryDatepicker do
           EOTEMPLATE
     end
 
+    let :datetimepicker_input_dateFormat_Ymd_template_datetime do
+          <<-EOTEMPLATE
+            <%= datetime_picker_input(:foo, :att1, :dateFormat  => "yy-mm-dd") %>
+          EOTEMPLATE
+    end
+
+    let :datetimepicker_input_dateFormat_Ymd_HM_template_datetime do
+          <<-EOTEMPLATE
+            <%= datetime_picker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :timeFormat  => "HH:mm", :value => "#{current_value.to_s}") %>
+          EOTEMPLATE
+    end
+
     let :datepicker_input_with_value_template do
         <<-EOTEMPLATE
           <%= datepicker_input(:foo, :att1, :value => "#{current_value.to_s}") %>
@@ -126,6 +138,14 @@ describe JqueryDatepicker do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"m/d/y\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
 
+    let :valid_response_javascript_with_options_Ymd do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({\"dateFormat\":\"yy-mm-dd\"})});\n//]]>\n</script>"
+    end
+
+    let :valid_response_javascript_with_options_Ymd_HM do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({\"dateFormat\":\"yy-mm-dd\",\"timeFormat\":\"HH:mm\"})});\n//]]>\n</script>"
+    end
+
     let :valid_response_input_with_options do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" />"
     end
@@ -152,6 +172,10 @@ describe JqueryDatepicker do
 
     let :valid_response_input_with_value_formatted_dmY do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%-m/%-d/%y')}\" />"
+    end
+
+    let :valid_response_input_with_value_formatted_Ymd_HHmm do
+      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%Y-%m-%d %H:%M')}\" />"
     end
 
     it "should return a valid code when calling from the helper" do
@@ -202,6 +226,17 @@ describe JqueryDatepicker do
     it "should format the date if both dateFormat and value params are set m/d/Y" do
       render :inline => datepicker_input_dateFormat_dmY_template_date
       rendered.strip.should == valid_response_input_with_value_formatted_dmY+valid_response_javascript_with_options_dmY
+    end
+
+    it "should format the date if dateFormat is set Y-m-d" do
+      @foo = Foo.new(current_value)
+      render :inline => datetimepicker_input_dateFormat_Ymd_template_datetime
+      rendered.strip.should == valid_response_input_with_value_formatted_Ymd_HHmm+valid_response_javascript_with_options_Ymd
+    end
+
+    it "should format the date if dateFormat, timeFormat, and value params are set Y-m-d HH:mm" do
+      render :inline => datetimepicker_input_dateFormat_Ymd_HM_template_datetime
+      rendered.strip.should == valid_response_input_with_value_formatted_Ymd_HHmm+valid_response_javascript_with_options_Ymd_HM
     end
 
     it "should render empty default value, but format the date if format options are sent but value is nil" do
