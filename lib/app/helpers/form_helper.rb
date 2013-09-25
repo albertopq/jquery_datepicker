@@ -8,8 +8,8 @@ module JqueryDatepicker
     def datepicker(object_name, method, options = {}, timepicker = false)
       input_tag = JqueryDatepicker::InstanceTag.new(object_name, method, self, options.delete(:object))
       dp_options, tf_options = input_tag.split_options(options)
-      if tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
-        tf_options[:value] = input_tag.format_date(tf_options[:value], dp_options[:dateFormat], dp_options[:timeFormat])
+      if dp_options.has_key?(:dateFormat)
+        tf_options[:value] = input_tag.format_date(tf_options[:value], dp_options[:dateFormat], dp_options[:timeFormat] || (timepicker && 'HH:mm'))
       end
       html = input_tag.to_input_field_tag("text", tf_options)
       method = timepicker ? "datetimepicker" : "datepicker"
@@ -53,8 +53,10 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
   end
 
   def format_date(tb_formatted, format, time_format)
+    tb_formatted ||= retrieve_object(@object).try(:send, @method_name)
+    return tb_formatted if tb_formatted.blank?
     new_format = translate_format(format, time_format)
-    Time.parse(tb_formatted).strftime(new_format)
+    (tb_formatted.respond_to?(:strftime) ? tb_formatted : Time.parse(tb_formatted)).strftime(new_format)
   end
 
   # Method that translates the datepicker date formats, defined in (http://docs.jquery.com/UI/Datepicker/formatDate)

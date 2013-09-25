@@ -22,12 +22,16 @@ class Foo
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
+  def initialize(value = nil)
+    @att1 = value
+  end
+
   def persisted?
     false
   end
 
   # Mocking an attribute
   def att1
-
+    @att1
   end
 end

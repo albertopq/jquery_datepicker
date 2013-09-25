@@ -98,9 +98,15 @@ describe JqueryDatepicker do
           EOTEMPLATE
     end
 
-    let :datetimepicker_input_dateFormat_Ymd_HM_template_date do
+    let :datetimepicker_input_dateFormat_Ymd_template_datetime do
           <<-EOTEMPLATE
-            <%= datetime_picker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :timeFormat  => "HH:mm", :minDate => -20, :maxDate => "+1M +10D", :value => "#{current_value.to_s}") %>
+            <%= datetime_picker_input(:foo, :att1, :dateFormat  => "yy-mm-dd") %>
+          EOTEMPLATE
+    end
+
+    let :datetimepicker_input_dateFormat_Ymd_HM_template_datetime do
+          <<-EOTEMPLATE
+            <%= datetime_picker_input(:foo, :att1, :dateFormat  => "yy-mm-dd", :timeFormat  => "HH:mm", :value => "#{current_value.to_s}") %>
           EOTEMPLATE
     end
 
@@ -132,8 +138,12 @@ describe JqueryDatepicker do
       "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"m/d/y\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
 
+    let :valid_response_javascript_with_options_Ymd do
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({\"dateFormat\":\"yy-mm-dd\"})});\n//]]>\n</script>"
+    end
+
     let :valid_response_javascript_with_options_Ymd_HM do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20,\"timeFormat\":\"HH:mm\"})});\n//]]>\n</script>"
+      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({\"dateFormat\":\"yy-mm-dd\",\"timeFormat\":\"HH:mm\"})});\n//]]>\n</script>"
     end
 
     let :valid_response_input_with_options do
@@ -218,8 +228,14 @@ describe JqueryDatepicker do
       rendered.strip.should == valid_response_input_with_value_formatted_dmY+valid_response_javascript_with_options_dmY
     end
 
+    it "should format the date if dateFormat is set Y-m-d" do
+      @foo = Foo.new(current_value)
+      render :inline => datetimepicker_input_dateFormat_Ymd_template_datetime
+      rendered.strip.should == valid_response_input_with_value_formatted_Ymd_HHmm+valid_response_javascript_with_options_Ymd
+    end
+
     it "should format the date if dateFormat, timeFormat, and value params are set Y-m-d HH:mm" do
-      render :inline => datetimepicker_input_dateFormat_Ymd_HM_template_date
+      render :inline => datetimepicker_input_dateFormat_Ymd_HM_template_datetime
       rendered.strip.should == valid_response_input_with_value_formatted_Ymd_HHmm+valid_response_javascript_with_options_Ymd_HM
     end
 
