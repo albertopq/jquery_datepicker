@@ -3,13 +3,14 @@ require 'date'
 module JqueryDatepicker
   module FormHelper
     include ActionView::Helpers::JavaScriptHelper
+    include ActionView::Helpers::Tags
 
     # Mehtod that generates datepicker input field inside a form
     def datepicker(object_name, method, options = {}, timepicker = false)
-      input_tag =  JqueryDatepicker::InstanceTag.new(object_name, method, self, options)
+      input_tag = JqueryDatepicker::InstanceTag.new(object_name, method, self, options)
       dp_options, tf_options =  input_tag.split_options(options)
-      tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
-      html = input_tag.to_input_field_tag("text", tf_options)
+      tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
+      html = TextField.new(object_name, method, self, tf_options).render
       method = timepicker ? "datetimepicker" : "datepicker"
       html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id(tf_options.stringify_keys)["id"]}').#{method}(#{dp_options.to_json})});")
       html.html_safe
@@ -32,8 +33,8 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::Tags::TextField
 
   FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y", "M" => "%b"}
 
-  # Extending ActionView::Helpers::InstanceTag module to make Rails build the name and id
-  # Just returns the options before generate the HTML in order to use the same id and name (see to_input_field_tag mehtod)
+  # Extending ActionView::Helpers::TextField module to make Rails build the name and id
+  # Just returns the options before generate the HTML in order to use the same id and name (see Tags::TextField render method )
 
   def get_name_and_id(options = {})
     add_default_name_and_id(options)
