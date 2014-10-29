@@ -13,27 +13,27 @@ current_value_date = current_value.to_date
 describe JqueryDatepicker do
 
    let :valid_nested_response_input do
-      "<input id=\"foo_var_att1\" name=\"foo[var][att1]\" size=\"30\" type=\"text\" />"
+      "<input id=\"foo_var_att1\" name=\"foo[var][att1]\" type=\"text\" />"
     end
 
     let :valid_nested_response_javascript do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_var_att1').datepicker({})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_var_att1').datepicker({})});\n//]]>\n</script>"
     end
 
     let :valid_response_input do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" type=\"text\" />"
     end
 
     let :valid_response_javascript do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_with_tf_options do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#custom_id').datepicker({})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#custom_id').datepicker({})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_datetime do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datetimepicker({})});\n//]]>\n</script>"
     end
 
   describe JqueryDatepicker::DatepickerHelper, :type => :view do
@@ -111,47 +111,47 @@ describe JqueryDatepicker do
     end
 
     let :valid_response_javascript_with_options do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_with_options_id_and_name do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#custom_id').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#custom_id').datepicker({\"dateFormat\":\"yy-mm-dd\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_with_options_M do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"dd M yy\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"dd M yy\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_with_options_dmY do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"m/d/y\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({\"dateFormat\":\"m/d/y\",\"maxDate\":\"+1M +10D\",\"minDate\":-20})});\n//]]>\n</script>"
     end
 
     let :valid_response_input_with_options do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" tabindex=\"70\" type=\"text\" />"
     end
 
     let :valid_response_input_with_options_id_and_name do
-      "<input id=\"custom_id\" name=\"custom_name\" size=\"30\" tabindex=\"70\" type=\"text\" />"
+      "<input id=\"custom_id\" name=\"custom_name\" tabindex=\"70\" type=\"text\" />"
     end
 
     let :valid_response_input_with_options_empty do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" value=\"\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" tabindex=\"70\" type=\"text\" value=\"\" />"
     end
 
     let :valid_response_input_with_value do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.to_s}\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" type=\"text\" value=\"#{current_value.to_s}\" />"
     end
 
     let :valid_response_input_with_value_formatted do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%Y-%m-%d')}\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" type=\"text\" value=\"#{current_value.strftime('%Y-%m-%d')}\" />"
     end
 
     let :valid_response_input_with_value_formatted_M do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%d %b %Y')}\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" type=\"text\" value=\"#{current_value.strftime('%d %b %Y')}\" />"
     end
 
     let :valid_response_input_with_value_formatted_dmY do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%-m/%-d/%y')}\" />"
+      "<input id=\"foo_att1\" name=\"foo[att1]\" type=\"text\" value=\"#{current_value.strftime('%-m/%-d/%y')}\" />"
     end
 
     it "should return a valid code when calling from the helper" do
