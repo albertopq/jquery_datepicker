@@ -3,16 +3,13 @@ require 'date'
 module JqueryDatepicker
   module FormHelper
     include ActionView::Helpers::JavaScriptHelper
-    include ActionView::Helpers::Tags
 
     # Mehtod that generates datepicker input field inside a form
     def datepicker(object_name, method, options = {}, timepicker = false)
-      input_tag = JqueryDatepicker::InstanceTag.new(object_name, method, self, options)
-      dp_options, tf_options =  input_tag.split_options(options)
-      tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
-      html = TextField.new(object_name, method, self, tf_options).render
+      input_tag = JqueryDatepicker::InstanceTag.new(object_name, method, self, options.merge(type: "text"))
+      html = input_tag.render
       method = timepicker ? "datetimepicker" : "datepicker"
-      html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id(tf_options.stringify_keys)["id"]}').#{method}(#{dp_options.to_json})});")
+      html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_id}').#{method}(#{input_tag.dp_options.to_json})});")
       html.html_safe
     end
   end
@@ -32,13 +29,21 @@ end
 class JqueryDatepicker::InstanceTag < ActionView::Helpers::Tags::TextField
 
   FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y", "M" => "%b"}
+  attr_reader :dp_options
 
-  # Extending ActionView::Helpers::TextField module to make Rails build the name and id
-  # Just returns the options before generate the HTML in order to use the same id and name (see Tags::TextField render method )
+  # Intialize a TextField without all the DatePicker attributes and simple store the DatePicker attributes
+  def initialize(object_name, method_name, template_object, options = {})
+    dp_options, tf_options = split_options(options)
+    tf_options[:value] = format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
+    super(object_name, method_name, template_object, tf_options)
+    @dp_options = dp_options
+  end
 
-  def get_name_and_id(options = {})
+  # Tags::TextField render already calls add_default_name_and_id but doesn't modify the instance @options, so call it here to ensure we calculate the same id attribute
+  def get_id
+    options = @options.stringify_keys
     add_default_name_and_id(options)
-    options
+    options['id']
   end
 
   def available_datepicker_options
