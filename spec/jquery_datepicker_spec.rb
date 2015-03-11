@@ -1,5 +1,5 @@
 require 'pp'
-require 'spec_helper'
+require 'rails_helper'
 require 'app/helpers/datepicker_helper'
 require 'app/helpers/form_helper'
 require 'date'
@@ -12,7 +12,11 @@ current_value_date = current_value.to_date
 
 describe JqueryDatepicker do
 
-   let :valid_nested_response_input do
+    let :valid_nested_response_input do
+      "<input type=\"text\" name=\"foo[var][att1]\" id=\"foo_var_att1\" size=\"30\" />"
+    end
+
+    let :valid_nested_response_input_r3 do
       "<input id=\"foo_var_att1\" name=\"foo[var][att1]\" size=\"30\" type=\"text\" />"
     end
 
@@ -21,6 +25,10 @@ describe JqueryDatepicker do
     end
 
     let :valid_response_input do
+      "<input type=\"text\" name=\"foo[att1]\" id=\"foo_att1\" size=\"30\" />"
+    end
+
+    let :valid_response_input_r3 do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" />"
     end
 
@@ -127,86 +135,114 @@ describe JqueryDatepicker do
     end
 
     let :valid_response_input_with_options do
+      "<input type=\"text\" name=\"foo[att1]\" id=\"foo_att1\" tabindex=\"70\" size=\"30\" />"
+    end
+
+    let :valid_response_input_with_options_r3 do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" />"
     end
 
     let :valid_response_input_with_options_id_and_name do
+      "<input type=\"text\" name=\"custom_name\" id=\"custom_id\" tabindex=\"70\" size=\"30\" />"
+    end
+
+    let :valid_response_input_with_options_id_and_name_r3 do
       "<input id=\"custom_id\" name=\"custom_name\" size=\"30\" tabindex=\"70\" type=\"text\" />"
     end
 
     let :valid_response_input_with_options_empty do
+      "<input type=\"text\" name=\"foo[att1]\" id=\"foo_att1\" value=\"\" tabindex=\"70\" size=\"30\" />"
+    end
+
+    let :valid_response_input_with_options_empty_r3 do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" tabindex=\"70\" type=\"text\" value=\"\" />"
     end
 
     let :valid_response_input_with_value do
+      "<input type=\"text\" name=\"foo[att1]\" id=\"foo_att1\" value=\"#{current_value.to_s}\" size=\"30\" />"
+    end
+
+    let :valid_response_input_with_value_r3 do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.to_s}\" />"
     end
 
     let :valid_response_input_with_value_formatted do
+      "<input type=\"text\" name=\"foo[att1]\" id=\"foo_att1\" value=\"#{current_value.strftime('%Y-%m-%d')}\" size=\"30\" />"
+    end
+
+    let :valid_response_input_with_value_formatted_r3 do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%Y-%m-%d')}\" />"
     end
 
     let :valid_response_input_with_value_formatted_M do
+      "<input type=\"text\" name=\"foo[att1]\" id=\"foo_att1\" value=\"#{current_value.strftime('%d %b %Y')}\" size=\"30\" />"
+    end
+
+    let :valid_response_input_with_value_formatted_M_r3 do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%d %b %Y')}\" />"
     end
 
     let :valid_response_input_with_value_formatted_dmY do
+      "<input type=\"text\" name=\"foo[att1]\" id=\"foo_att1\" value=\"#{current_value.strftime('%-m/%-d/%y')}\" size=\"30\" />"
+    end
+
+    let :valid_response_input_with_value_formatted_dmY_r3 do
       "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" value=\"#{current_value.strftime('%-m/%-d/%y')}\" />"
     end
 
     it "should return a valid code when calling from the helper" do
       render :inline => datepicker_input_template
-      rendered.strip.should == valid_response_input+valid_response_javascript
+      expect(rendered.strip).to eq(valid_response_input+valid_response_javascript).or eq(valid_response_input_r3+valid_response_javascript)
     end
 
     it "should use the jQuery datepicker options" do
       render :inline => datepicker_input_dp_options_template
-      rendered.strip.should == valid_response_input+valid_response_javascript_with_options
+      expect(rendered.strip).to eq(valid_response_input+valid_response_javascript_with_options).or eq(valid_response_input_r3+valid_response_javascript_with_options)
     end
 
     it "should use the text_field options" do
       render :inline => datepicker_input_tf_options_template
-      rendered.strip.should == valid_response_input_with_options+valid_response_javascript
+      expect(rendered.strip).to eq(valid_response_input_with_options+valid_response_javascript).or eq(valid_response_input_with_options_r3+valid_response_javascript)
     end
 
     it "should use the text_field options id and name" do
       render :inline => datepicker_input_tf_options_id_and_name_template
-      rendered.strip.should == valid_response_input_with_options_id_and_name+valid_response_javascript_with_tf_options
+      expect(rendered.strip).to eq(valid_response_input_with_options_id_and_name+valid_response_javascript_with_tf_options).or eq(valid_response_input_with_options_id_and_name_r3+valid_response_javascript_with_tf_options)
     end
 
     it "should use populate the default value when sending a Date.to_s" do
       render :inline => datepicker_input_dateFormat_template_date
-      rendered.strip.should == valid_response_input_with_value_formatted+valid_response_javascript_with_options
+      expect(rendered.strip).to eq(valid_response_input_with_value_formatted+valid_response_javascript_with_options).or eq(valid_response_input_with_value_formatted_r3+valid_response_javascript_with_options)
     end
 
     it "should put each option on the correct place when sending Datepicker and textfield options" do
       render :inline => datepicker_input_tf_and_dp_options_template
-      rendered.strip.should == valid_response_input_with_options+valid_response_javascript_with_options
+      expect(rendered.strip).to eq(valid_response_input_with_options+valid_response_javascript_with_options).or eq(valid_response_input_with_options_r3+valid_response_javascript_with_options)
     end
 
     it "should work when sending the value on the options" do
       render :inline => datepicker_input_with_value_template
-      rendered.strip.should == valid_response_input_with_value+valid_response_javascript
+      expect(rendered.strip).to eq(valid_response_input_with_value+valid_response_javascript).or eq(valid_response_input_with_value_r3+valid_response_javascript)
     end
 
     it "should format the date if both dateFormat and value params are set" do
       render :inline => datepicker_input_dateFormat_template
-      rendered.strip.should == valid_response_input_with_value_formatted+valid_response_javascript_with_options
+      expect(rendered.strip).to eq(valid_response_input_with_value_formatted+valid_response_javascript_with_options).or eq(valid_response_input_with_value_formatted_r3+valid_response_javascript_with_options)
     end
 
     it "should format the date if both dateFormat and value params are set M" do
       render :inline => datepicker_input_dateFormat_M_template_date
-      rendered.strip.should == valid_response_input_with_value_formatted_M+valid_response_javascript_with_options_M
+      expect(rendered.strip).to eq(valid_response_input_with_value_formatted_M+valid_response_javascript_with_options_M).or eq(valid_response_input_with_value_formatted_M_r3+valid_response_javascript_with_options_M)
     end
 
     it "should format the date if both dateFormat and value params are set m/d/Y" do
       render :inline => datepicker_input_dateFormat_dmY_template_date
-      rendered.strip.should == valid_response_input_with_value_formatted_dmY+valid_response_javascript_with_options_dmY
+      expect(rendered.strip).to eq(valid_response_input_with_value_formatted_dmY+valid_response_javascript_with_options_dmY).or eq(valid_response_input_with_value_formatted_dmY_r3+valid_response_javascript_with_options_dmY)
     end
 
     it "should render empty default value, but format the date if format options are sent but value is nil" do
       render :inline => datepicker_input_with_options_with_empty_value_template
-      rendered.strip.should == valid_response_input_with_options_empty+valid_response_javascript_with_options
+      expect(rendered.strip).to eq(valid_response_input_with_options_empty+valid_response_javascript_with_options).or eq(valid_response_input_with_options_empty_r3+valid_response_javascript_with_options)
     end
 
   end
@@ -247,20 +283,20 @@ describe JqueryDatepicker do
 
     it "should return a valid response when calling inside a form_for" do
       render :inline => datepicker_form_template , :locals => {:foo => foo}
-      rendered.should include(valid_response_input)
-      rendered.should include(valid_response_javascript)
+      expect(rendered).to include(valid_response_input).or include(valid_response_input_r3)
+      expect(rendered).to include(valid_response_javascript)
     end
 
     it "should return a valid datetime response when calling inside a form_for" do
       render :inline => datetimepicker_form_template , :locals => {:foo => foo}
-      rendered.should include(valid_response_input)
-      rendered.should include(valid_response_javascript_datetime)
+      expect(rendered).to include(valid_response_input).or include(valid_response_input_r3)
+      expect(rendered).to include(valid_response_javascript_datetime)
     end
 
     it "should return a valid response when calling inside a nested form_form" do
       render :inline => datepicker_nested_form_template,:locals  => {:foo => foo}
-      rendered.should include(valid_nested_response_input)
-      rendered.should include(valid_nested_response_javascript)
+      expect(rendered).to include(valid_nested_response_input).or include(valid_nested_response_input_r3)
+      expect(rendered).to include(valid_nested_response_javascript)
     end
 
   end
@@ -268,22 +304,22 @@ describe JqueryDatepicker do
   describe JqueryDatepicker::InstanceTag do
     it "should return a valid format when translating yy-mm-dd" do
       input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
-      input_tag.translate_format("yy-mm-dd").should eq("%Y-%m-%d")
+      expect(input_tag.translate_format("yy-mm-dd")).to eq("%Y-%m-%d")
     end
 
     it "should return a valid format when translating mm-dd-yy" do
       input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
-      input_tag.translate_format("mm-dd-yy").should eq("%m-%d-%Y")
+      expect(input_tag.translate_format("mm-dd-yy")).to eq("%m-%d-%Y")
     end
 
     it "should return a valid format when translating m-d-y" do
       input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
-      input_tag.translate_format("m-d-y").should eq("%-m-%-d-%y")
+      expect(input_tag.translate_format("m-d-y")).to eq("%-m-%-d-%y")
     end
 
     it "should return a valid format when translating yy/m-dd" do
       input_tag =  JqueryDatepicker::InstanceTag.new("test", "method", "aux")
-      input_tag.translate_format("yy/m-dd").should eq("%Y/%-m-%d")
+      expect(input_tag.translate_format("yy/m-dd")).to eq("%Y/%-m-%d")
     end
   end
 end
