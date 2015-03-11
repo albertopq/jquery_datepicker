@@ -3,8 +3,8 @@ script: "bundle exec rake spec"
 env:
   - CI=true
 rvm:
-  - 1.9.2
   - 1.9.3
   - 2.0.0
+  - 2.2.1
 gemfile:
   - Gemfile
