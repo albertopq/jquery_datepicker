@@ -1,5 +1,5 @@
 require 'pp'
-require 'spec_helper'
+require 'rails_helper'
 require 'app/helpers/datepicker_helper'
 require 'app/helpers/form_helper'
 require 'date'
@@ -21,11 +21,11 @@ describe JqueryDatepicker do
     end
 
     let :valid_response_input do
-      "<input id=\"foo_att1\" name=\"foo[att1]\" size=\"30\" type=\"text\" />"
+      '<input type="text" name="foo[att1]" id="foo_att1" size="30" />'
     end
 
     let :valid_response_javascript do
-      "<script type=\"text/javascript\">\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({})});\n//]]>\n</script>"
+      "<script>\n//<![CDATA[\njQuery(document).ready(function(){jQuery('#foo_att1').datepicker({})});\n//]]>\n</script>"
     end
 
     let :valid_response_javascript_with_tf_options do

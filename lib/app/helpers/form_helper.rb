@@ -6,10 +6,10 @@ module JqueryDatepicker
 
     # Mehtod that generates datepicker input field inside a form
     def datepicker(object_name, method, options = {}, timepicker = false)
-      input_tag =  JqueryDatepicker::InstanceTag.new(object_name, method, self, options.delete(:object))
+      input_tag =  JqueryDatepicker::InstanceTag.new(object_name, method, self, options)
       dp_options, tf_options =  input_tag.split_options(options)
       tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
-      html = input_tag.to_input_field_tag("text", tf_options)
+      html = input_tag.text_field_tag(input_tag.get_name_and_id(tf_options.stringify_keys)["name"], nil, tf_options)
       method = timepicker ? "datetimepicker" : "datepicker"
       html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id(tf_options.stringify_keys)["id"]}').#{method}(#{dp_options.to_json})});")
       html.html_safe
@@ -28,7 +28,7 @@ module JqueryDatepicker::FormBuilder
   end
 end
 
-class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
+class JqueryDatepicker::InstanceTag < ActionView::Helpers::Tags::Base
 
   FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y", "M" => "%b"}
 
@@ -46,7 +46,7 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::InstanceTag
 
   def split_options(options)
     tf_options = options.slice!(*available_datepicker_options)
-    return options, tf_options
+    return options, tf_options.merge({size: 30})
   end
 
   def format_date(tb_formatted, format)

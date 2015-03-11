@@ -2,11 +2,11 @@ require 'active_support'
 require 'active_record'
 require 'active_support/deprecation'
 require 'action_view'
+require 'rails/all'
 require 'rspec/rails/adapters'
 require 'rspec/rails/example/rails_example_group'
 require 'rspec/rails/matchers'
 require 'rspec/rails/example/view_example_group'
-require 'rspec/rails/mocks'
 
 
 plugin_spec_dir = File.dirname(__FILE__)
