@@ -11,7 +11,7 @@ module JqueryDatepicker
       tf_options[:value] = input_tag.format_date(tf_options[:value], String.new(dp_options[:dateFormat])) if  tf_options[:value] && !tf_options[:value].empty? && dp_options.has_key?(:dateFormat)
       html = input_tag.text_field_tag(input_tag.get_name_and_id(tf_options.stringify_keys)["name"], nil, tf_options)
       method = timepicker ? "datetimepicker" : "datepicker"
-      html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id(tf_options.stringify_keys)["id"]}').#{method}(#{dp_options.to_json})});")
+      html += javascript_tag("jQuery(document).ready(function(){jQuery('##{input_tag.get_name_and_id(tf_options.stringify_keys)["id"]}').#{method}(#{dp_options.to_json})});", type: 'text/javascript')
       html.html_safe
     end
   end
@@ -28,7 +28,13 @@ module JqueryDatepicker::FormBuilder
   end
 end
 
-class JqueryDatepicker::InstanceTag < ActionView::Helpers::Tags::Base
+begin
+  BASE_TAG_HELPER = Class.new(ActionView::Helpers::Tags::Base)
+rescue
+  BASE_TAG_HELPER = Class.new(ActionView::Helpers::InstanceTag)
+end
+
+class JqueryDatepicker::InstanceTag < BASE_TAG_HELPER
 
   FORMAT_REPLACEMENTES = { "yy" => "%Y", "mm" => "%m", "dd" => "%d", "d" => "%-d", "m" => "%-m", "y" => "%y", "M" => "%b"}
 
@@ -46,6 +52,7 @@ class JqueryDatepicker::InstanceTag < ActionView::Helpers::Tags::Base
 
   def split_options(options)
     tf_options = options.slice!(*available_datepicker_options)
+    tf_options.delete(:object) if self.class.ancestors.collect(&:to_s).include? 'ActionView::Helpers::InstanceTag'
     return options, tf_options.merge({size: 30})
   end
 
